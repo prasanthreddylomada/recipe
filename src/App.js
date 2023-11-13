@@ -1,6 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
 import HomePage from './HomePage';
+import LandingPage from './LandingPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   
@@ -20,7 +20,12 @@ function App() {
 
   return (
     <div className="App">
-      <HomePage theme={theme}/>
+      <Router>
+        <Routes>
+          <Route path='/' element={<LandingPage theme={theme}/>} />
+          <Route path='/home' element={<HomePage theme={theme}/>} />
+        </Routes>
+      </Router>
     </div>
   );
 }

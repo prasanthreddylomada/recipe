@@ -1,208 +1,142 @@
 import React, { Component } from 'react';
-import utensilsIcon from './images/Icon utensils.png';
-import cooking from './images/cooking.png'
-class HomePage extends Component {
+import profile from './images/Icon utensils.png';
 
-    constructor(props) {
-        super(props);
-        this.state = {
-          signupPopup: false,
-          browseRecipesPopup: false,
-          signupUsername: '',
-          signupPassword: '',
-          signupConfirmPassword: '',
-          loginUsername: '',
-          loginPassword: '',
-        };
-      }
-    
-      handleOpenSignupPopup = () => {
-        this.setState({ signupPopup: true });
-      };
-    
-      handleCloseSignupPopup = () => {
-        this.setState({ signupPopup: false });
-      };
-    
-      handleOpenBrowseRecipesPopup = () => {
-        this.setState({ browseRecipesPopup: true });
-      };
-    
-      handleCloseBrowseRecipesPopup = () => {
-        this.setState({ browseRecipesPopup: false });
-      };
-    
-      handleCreateAccount = () => {
-        if (this.state.signupPassword !== this.state.signupConfirmPassword) {
-          alert('Password and Confirm Password do not match!');
-          return;
-        }
-    
-        console.log('Username:', this.state.signupUsername);
-        console.log('Password:', this.state.signupPassword);
-    
-        // Close the signup popup after handling the account creation
-        this.handleCloseSignupPopup();
-      };
-    
-      handleLogin = () => {
-        console.log('Login Username:', this.state.loginUsername);
-        console.log('Login Password:', this.state.loginPassword);
-    
-        // Handle login logic here
-    
-        // Close the login popup after handling the login
-        this.handleCloseBrowseRecipesPopup();
-      };
-    
-      handleSignupUsernameChange = (event) => {
-        this.setState({ signupUsername: event.target.value });
-      };
-    
-      handleSignupPasswordChange = (event) => {
-        this.setState({ signupPassword: event.target.value });
-      };
-    
-      handleSignupConfirmPasswordChange = (event) => {
-        this.setState({ signupConfirmPassword: event.target.value });
-      };
-    
-      handleLoginUsernameChange = (event) => {
-        this.setState({ loginUsername: event.target.value });
-      };
-    
-      handleLoginPasswordChange = (event) => {
-        this.setState({ loginPassword: event.target.value });
-      };
-    
+class HomePage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedOptions: [],
+      searchText: '',
+      filteredOptions: [],
+      allOptions: [
+        { id: 1, value: 'Option 1' },
+        { id: 2, value: 'Option 2' },
+        { id: 3, value: 'Option 3' },
+      ],
+    };
+  }
+
+  handleSelectChange = (event) => {
+    const selectedValues = Array.from(event.target.selectedOptions, (option) => option.value);
+    this.setState({ selectedOptions: selectedValues });
+  };
+
+  handleSearchChange = (event) => {
+    const searchText = event.target.value;
+    const filteredOptions = this.state.allOptions.filter((option) =>
+      option.value.toLowerCase().includes(searchText.toLowerCase())
+    );
+    this.setState({ searchText, filteredOptions });
+  };
+
+  handleOptionSelect = (selectedOption) => {
+    const selectedOptions = [...this.state.selectedOptions, selectedOption.value];
+    this.setState({
+      selectedOptions,
+      searchText: '',
+      filteredOptions: [],
+    });
+  };
+
+  handleRemoveOption = (removedOption) => {
+    const selectedOptions = this.state.selectedOptions.filter((option) => option !== removedOption);
+    this.setState({ selectedOptions });
+  };
+
   render() {
     const { theme } = this.props;
+    const { searchText, filteredOptions, selectedOptions } = this.state;
 
     const styles = {
-      topcontainer: {
+      topnavcontainer: {
         display: 'flex',
+        alignItems: 'start',
         justifyContent: 'space-between',
         padding: '10px',
-
       },
-      logoContainer: { 
-        margin: '2% 0 0 5%', // top right bottom left
-      },
-      logo: {
-        width: '20px',
-        height: '20px',
-      },
-      buttonContainer: {
+      searchBarContainer: {
         display: 'flex',
-        justifyContent: 'flex-end',
-        margin: '2% 5% 0 0',
+        flexDirection: 'column',
+        width: '100%',
+        position: 'relative',
       },
-      button: {
-        backgroundColor: theme.colors.button,
-        color: theme.colors.white,
-        padding: '10px 20px',
-        border: 'none',
+      searchBar: {
+        width: '50%',
+        padding: '10px',
+        fontSize: '16px',
         borderRadius: '5px',
+        border: '1px solid #ccc',
+      },
+      dropdown: {
+        position: 'absolute',
+        top: '100%',
+        left: 0,
+        width: '51%',
+        maxHeight: '100px',
+        overflowY: 'auto',
+        border: '1px solid #ccc',
+        borderRadius: '0 0 5px 5px',
+        zIndex: 1,
+      },
+      selectedOptionsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginTop: '5px',
+      },
+      selectedOption: {
+        background: '#eee',
+        borderRadius: '3px',
+        padding: '3px 8px',
+        margin: '2px',
+        display: 'flex',
+        alignItems: 'center',
+      },
+      removeOption: {
+        marginLeft: '5px',
         cursor: 'pointer',
       },
-      signupbutton: {
-        backgroundColor: theme.colors.button,
-        color: theme.colors.white,
-        padding: '10px 20px',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        margin:'10px 3px 2px 4px',
-        fontSize:'15px'
-      },
-      bottomcontainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        margin: '5% 0',
-      },
-      column: {
-        width: '40%',
-        margin: '0 5%',
-      },
-      column1: {
-        textAlign: 'left',
-      },
-      bottombuttoncontainer:{
-        display:'flex',
-        marginTop:'5%'
-      }
     };
-
-
 
     return (
       <div>
-        <div style={styles.topcontainer}>
-            <div style={styles.logoContainer}>
-            <img
-                src={utensilsIcon}
-                alt="Logo"
-                style={styles.logo}
+        <div style={styles.topnavcontainer}>
+          <div style={styles.searchBarContainer}>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchText}
+              onChange={this.handleSearchChange}
+              style={styles.searchBar}
             />
-            </div>
-            <div style={styles.buttonContainer}>
-                <button onClick={this.handleOpenSignupPopup} style={styles.button}>Join Now</button>
-            </div>
-            {/* Signup Popup */}
-            {this.state.signupPopup && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)' }}>
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'white', padding: '40px', borderRadius: '5px' }}>
-                    <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>Create Account</div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="text" placeholder="Username" value={this.state.signupUsername} onChange={this.handleSignupUsernameChange} />
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="password" placeholder="Password" value={this.state.signupPassword} onChange={this.handleSignupPasswordChange} />
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="password" placeholder="Confirm Password" value={this.state.signupConfirmPassword} onChange={this.handleSignupConfirmPasswordChange} />
-                    <div>
-                        <button style={styles.signupbutton} onClick={this.handleCreateAccount}>Create Account</button>
-                        <button style={styles.signupbutton} onClick={this.handleCloseSignupPopup}>Cancel</button>
-                    </div>
-                    </div>
-                </div>
-                </div>
+            {searchText && (
+              <div style={styles.dropdown}>
+                {filteredOptions.map((option) => (
+                  <div
+                    key={option.id}
+                    onClick={() => this.handleOptionSelect(option)}
+                    style={{ padding: '10px', cursor: 'pointer' }}
+                  >
+                    {option.value}
+                  </div>
+                ))}
+              </div>
             )}
-            {/* Login Popup */}
-            {this.state.browseRecipesPopup && (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)' }}>
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'white', padding: '40px', borderRadius: '5px' }}>
-                    <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>Enter Credentials</div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="text" placeholder="Username" value={this.state.loginUsername} onChange={this.handleLoginUsernameChange} />
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="password" placeholder="Password" value={this.state.loginPassword} onChange={this.handleLoginPasswordChange} />
-                    <div>
-                        <button style={styles.signupbutton} onClick={this.handleLogin}>
-                        Submit
-                        </button>
-                        <button style={styles.signupbutton} onClick={this.handleCloseBrowseRecipesPopup}>
-                        Cancel
-                        </button>
-                    </div>
-                    </div>
+            <div style={styles.selectedOptionsContainer}>
+              {selectedOptions.map((option) => (
+                <div key={option} style={styles.selectedOption}>
+                  {option}
+                  <span
+                    onClick={() => this.handleRemoveOption(option)}
+                    style={styles.removeOption}
+                  >
+                    &#x2715;
+                  </span>
                 </div>
-                </div>
-            )}
-        </div>
-        <div style={styles.bottomcontainer}>
-            <div style={{ ...styles.column, ...styles.column1 }}>
-                <div style={{ fontWeight: 'bold', fontSize: '70px', fontFamily: 'Roboto' }}>
-                    Discover Delicious Recipes: Your Ultimate Cooking
-                </div>
-                <div style={{ fontFamily: 'Roboto', fontSize: '20px', marginLeft: '2%', marginTop: '2%' }}>
-                    Introducing the Ultimate Recipe App:Explore,Find,Cook and Share
-                </div>
-                <div style={styles.bottombuttoncontainer}>
-                    <button onClick={this.handleOpenBrowseRecipesPopup} style={{...styles.button,fontSize:'20px',paddingInline:'5%'}}>Browse Recipes</button>
-                </div>
+              ))}
             </div>
-            <div style={{ ...styles.column}}>
-                <img
-                    src={cooking} 
-                />
-            </div>
+          </div>
+          <img src={profile} alt="profile image" />
         </div>
       </div>
     );
