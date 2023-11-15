@@ -2,8 +2,29 @@ import HomePage from './HomePage';
 import LandingPage from './LandingPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RecipeInfo from './RecipeInfo';
-
+import React, { useState, useEffect } from 'react';
 function App() {
+
+    const [fileContent1, setFileContent1] = useState('');
+    const [fileContent2, setFileContent2] = useState('');
+  
+    useEffect(() => {
+      const loadFile = async () => {
+        try {
+          const response1 = await fetch('/processcb.txt'); // Update the path accordingly
+          const content1 = await response1.text();
+          setFileContent1(content1);
+          const response2 = await fetch('/inst.txt'); // Update the path accordingly
+          const content2 = await response2.text();
+          setFileContent2(content2);
+          // console.log(content);
+        } catch (error) {
+          console.error('Error loading file:', error);
+        }
+      };
+  
+      loadFile();
+    }, []); 
   
   const theme = {
     colors: {
@@ -19,69 +40,22 @@ function App() {
     },
   };
 
-  const recipes = [
-    {
-      id: 1,
-      name: 'Recipe 1',
+  const recipes = [];
+
+  for (let i = 1; i <= 10; i++) 
+  {
+    recipes.push({
+      id: i,
+      name: `Chicken Biryani ${i}`,
       image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient A', 'Ingredient B', 'Ingredient C','Ingredient X', 'Ingredient Y', 'Ingredient Z'],
-    },
-    {
-      id: 2,
-      name: 'Recipe 2',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient X', 'Ingredient Y', 'Ingredient Z'],
-    },
-    {
-      id: 3,
-      name: 'Recipe 3',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient A', 'Ingredient B', 'Ingredient C'],
-    },
-    {
-      id: 4,
-      name: 'Recipe 4',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient X', 'Ingredient Y', 'Ingredient Z'],
-    },
-    {
-      id: 5,
-      name: 'Recipe 5',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient A', 'Ingredient B', 'Ingredient C'],
-    },
-    {
-      id: 6,
-      name: 'Recipe 6',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient X', 'Ingredient Y', 'Ingredient Z'],
-    },
-    {
-      id: 7,
-      name: 'Recipe 7',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient A', 'Ingredient B', 'Ingredient C'],
-    },
-    {
-      id: 8,
-      name: 'Recipe 8',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient X', 'Ingredient Y', 'Ingredient Z'],
-    },
-    {
-      id: 9,
-      name: 'Recipe 9',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient A', 'Ingredient B', 'Ingredient C'],
-    },
-    {
-      id: 10,
-      name: 'Recipe 10',
-      image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: ['Ingredient X', 'Ingredient Y', 'Ingredient Z'],
-    },
-    // Add more recipes as needed
-  ];
+      ingredients: Array.from({ length: 4 }, (_, index) => `Ingredient ${String.fromCharCode(65 + index)}`),
+      cookingProcess: fileContent1, // Replace 'fileContent' with the actual content
+      instructions: fileContent2,
+    });
+  }
+
+
+
 
 
   return (
@@ -90,7 +64,7 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage theme={theme}/>} />
           <Route path='/home' element={<HomePage theme={theme} recipes={recipes}/>} />
-          <Route path='/recipe/:id' element={<RecipeInfo recipes={recipes} />} />
+          <Route path='/recipe/:id' element={<RecipeInfo theme={theme} recipes={recipes} />} />
         </Routes>
       </Router>
     </div>
