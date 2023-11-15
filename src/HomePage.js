@@ -15,14 +15,16 @@ class HomePage extends Component {
         { id: 1, value: 'Option 1' },
         { id: 2, value: 'Option 2' },
         { id: 3, value: 'Option 3' },
+        { id: 4, value: 'Option 4' },
+        { id: 5, value: 'Option 5' },
+        { id: 6, value: 'Option 6' },
+        { id: 7, value: 'Option 7' },
+        { id: 8, value: 'Option 8' },
+        { id: 9, value: 'Option 9' },
       ],
     };
   }
 
-  handleSelectChange = (event) => {
-    const selectedValues = Array.from(event.target.selectedOptions, (option) => option.value);
-    this.setState({ selectedOptions: selectedValues });
-  };
 
   handleSearchChange = (event) => {
     const searchText = event.target.value;
@@ -33,13 +35,19 @@ class HomePage extends Component {
   };
 
   handleOptionSelect = (selectedOption) => {
-    const selectedOptions = [...this.state.selectedOptions, selectedOption.value];
-    this.setState({
-      selectedOptions,
-      searchText: '',
-      filteredOptions: [],
-    });
+    const selectedOptions = [...this.state.selectedOptions];
+    
+    // Check if the selected option already exists in the array
+    if (!selectedOptions.includes(selectedOption.value)) {
+      selectedOptions.push(selectedOption.value);
+      this.setState({
+        selectedOptions,
+        searchText: '',
+        filteredOptions: [],
+      });
+    }
   };
+  
 
   handleRemoveOption = (removedOption) => {
     const selectedOptions = this.state.selectedOptions.filter((option) => option !== removedOption);
@@ -76,9 +84,9 @@ class HomePage extends Component {
         top: '100%',
         left: 0,
         width: '51%',
-        maxHeight: '100px',
+        maxHeight: '300px',
         overflowY: 'auto',
-        border: '1px solid #ccc',
+        border: '1px solid #fff',
         borderRadius: '0 0 5px 5px',
         zIndex: 1,
       },
@@ -98,7 +106,7 @@ class HomePage extends Component {
       removeOption: {
         marginLeft: '5px',
         cursor: 'pointer',
-      },
+      }
     };
 
     return (
@@ -118,7 +126,7 @@ class HomePage extends Component {
                   <div
                     key={option.id}
                     onClick={() => this.handleOptionSelect(option)}
-                    style={{ padding: '10px', cursor: 'pointer' }}
+                    style={{ padding: '10px', cursor: 'pointer',background: '#EAE9E2'}}
                   >
                     {option.value}
                   </div>
@@ -142,10 +150,12 @@ class HomePage extends Component {
           <img src={profile} alt="profile image" />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
-          {recipes.map((recipe) => (
-            <Link to={`/recipe/${recipe.id}`} key={recipe.id} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <RecipeCard recipe={recipe} />
-          </Link>
+          {recipes.map((recipe,index) => (
+            <div style={{ marginLeft: index === 0 && searchText ? '50%' : '0' }} key={recipe.id}>
+              <Link to={`/recipe/${recipe.id}`} key={recipe.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <RecipeCard recipe={recipe} />
+              </Link>
+            </div>
           ))}
         </div>
       </div>
