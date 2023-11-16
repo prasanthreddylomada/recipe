@@ -64,7 +64,7 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage theme={theme}/>} />
           <Route path='/home' element={<HomePage theme={theme} recipes={recipes}/>} />
-          <Route path='/recipe/:id' element={<RecipeInfo theme={theme} recipes={recipes} />} />
+          <Route path='/recipe/:id' element={<RecipeInfo recipes={recipes} />} />
         </Routes>
       </Router>
     </div>

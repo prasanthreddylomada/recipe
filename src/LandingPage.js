@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import utensilsIcon from './images/Icon utensils.png';
 import cooking from './images/cooking.png'
 import { Navigate } from 'react-router-dom';
-
+import axios from 'axios' ;
 class LandingPage extends Component {
 
     constructor(props) {
@@ -43,6 +43,29 @@ class LandingPage extends Component {
     
         console.log('Username:', this.state.signupUsername);
         console.log('Password:', this.state.signupPassword);
+        try {
+          axios.post("http://localhost:8000/signup",{
+            username: this.state.signupUsername,password:this.state.signupPassword
+          })
+          .then(res=>{
+            if(res.data === "exist")
+            {
+              alert("alreadyexists")
+
+            }
+            else if(res.data === "notexist")
+            {
+              alert("not signed up")
+            }
+
+          })
+          
+        } catch (error) {
+
+          console.log(error);
+          
+        }
+
         
         // Close the signup popup after handling the account creation
         this.handleCloseSignupPopup();
@@ -53,9 +76,36 @@ class LandingPage extends Component {
         console.log('Login Password:', this.state.loginPassword);
     
         // Handle login logic here
+        try {
+          axios.post("http://localhost:8000/",{
+            username: this.state.signupUsername,password:this.state.signupPassword
+          })
+          .then(res=>{
+            if(res.data =="crctpswd")
+            {
+              console.log("success")
+              this.setState({ isloggedin:true });
+
+            }
+            else if(res.data == "notexist")
+            {
+              alert("not signed up")
+            }
+            else if(res.data == "wrngpswd")
+            {
+              alert("wrong password")
+            }
+          })
+          
+        } catch (error) {
+          alert("wrong details")
+          console.log(error);
+          
+        }
+
     
         // Close the login popup after handling the login
-        this.setState({ isloggedin:true });
+        
         this.handleCloseBrowseRecipesPopup();
       };
     
