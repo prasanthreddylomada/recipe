@@ -14,9 +14,13 @@ app.post("/",async(req,res)=>{
     const{username,password} = req.body
     try {
         const check = await collection.findOne({username:username})
+        console.log("listen succesfull")
+        console.log(username)
+        console.log(password)
+        console.log(check)
         if(check)
         {
-            if(check.password == password ) 
+            if(check.password === password ) 
             {
                 res.json("crctpswd")
 

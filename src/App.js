@@ -48,9 +48,10 @@ function App() {
       id: i,
       name: `Chicken Biryani ${i}`,
       image: 'https://imgs.search.brave.com/fq5XQP7deYTygo4Hc4ABXWgiAdgR-YMk9RFVFTh56s8/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vcGljanVt/Ym8uY29tL3dwLWNv/bnRlbnQvdXBsb2Fk/cy9mcmllcy1mb29k/LWZyZWUtcGhvdG8u/anBnP3c9NjAwJnF1/YWxpdHk9ODA',
-      ingredients: Array.from({ length: 4 }, (_, index) => `Ingredient ${String.fromCharCode(65 + index)}`),
+      ingredients: Array.from({ length: 10 }, (_, index) => `Ingredient ${String.fromCharCode(65 + index)}`),
       cookingProcess: fileContent1, // Replace 'fileContent' with the actual content
       instructions: fileContent2,
+      makingtime: '10 hours',
     });
   }
 

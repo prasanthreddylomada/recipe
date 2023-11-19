@@ -72,26 +72,26 @@ class LandingPage extends Component {
       };
     
       handleLogin = () => {
-        console.log('Login Username:', this.state.loginUsername);
-        console.log('Login Password:', this.state.loginPassword);
-    
+        // console.log('Login Username:', this.state.loginUsername);
+        // console.log('Login Password:', this.state.loginPassword);
+        console.log('eneterd handle login');
         // Handle login logic here
         try {
           axios.post("http://localhost:8000/",{
-            username: this.state.signupUsername,password:this.state.signupPassword
+            username: this.state.loginUsername,password:this.state.loginPassword
           })
           .then(res=>{
-            if(res.data =="crctpswd")
+            if(res.data === "crctpswd")
             {
               console.log("success")
               this.setState({ isloggedin:true });
 
             }
-            else if(res.data == "notexist")
+            else if(res.data === "notexist")
             {
               alert("not signed up")
             }
-            else if(res.data == "wrngpswd")
+            else if(res.data === "wrngpswd")
             {
               alert("wrong password")
             }
@@ -225,8 +225,8 @@ class LandingPage extends Component {
                 <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'white', padding: '40px', borderRadius: '5px' }}>
                     <div style={{ fontSize: '40px', fontWeight: 'bold', marginBottom: '10px' }}>Enter Credentials</div>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="text" placeholder="Username" value={this.state.loginUsername} onChange={this.handleLoginUsernameChange} />
-                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="password" placeholder="Password" value={this.state.loginPassword} onChange={this.handleLoginPasswordChange} />
+                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="text" id = "loginusername" placeholder="Username" value={this.state.loginUsername} onChange={this.handleLoginUsernameChange} />
+                    <input style={{ marginTop: '5px', marginBottom: '5px', fontSize: '20px' }} type="password" id = "loginpassword" placeholder="Password" value={this.state.loginPassword} onChange={this.handleLoginPasswordChange} />
                     <div>
                         <button style={styles.signupbutton} onClick={this.handleLogin}>
                         Submit

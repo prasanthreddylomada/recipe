@@ -37,7 +37,6 @@ class HomePage extends Component {
   handleOptionSelect = (selectedOption) => {
     const selectedOptions = [...this.state.selectedOptions];
     
-    // Check if the selected option already exists in the array
     if (!selectedOptions.includes(selectedOption.value)) {
       selectedOptions.push(selectedOption.value);
       this.setState({
