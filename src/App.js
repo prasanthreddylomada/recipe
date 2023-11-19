@@ -58,10 +58,11 @@ function App() {
       cookingProcess: fileContent1, // Replace 'fileContent' with the actual content
       instructions: fileContent2,
       makingtime: '10 hours',
+      author:'Prasanth'
     });
   }
   console.log("this is app.js")
-  console.log(loginUsername)
+  console.log(loginUsername) 
   return (
     <div className="App">
       <Router>

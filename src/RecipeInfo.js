@@ -28,8 +28,10 @@ const RecipeInfo = ({ recipes }) => {
   
         {/* Right Half */}
         <div style={{ width: '50%', padding: '0 20px' }}>
+          <div style={{display:'flex',flexDirection:'row',alignItems:'baseline'}}>
           <h1>{recipe.name}</h1>
-  
+          <p style={{paddingLeft:'3px'}}>by {recipe.author}</p>
+          </div>
           {/* Ingredients in Multiple Columns */}
           <h2>Ingredients</h2>
           <div style={{ display: 'flex', flexDirection: 'column', columnGap: '10px', maxHeight: '200px', overflowY: 'auto' }}>
