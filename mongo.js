@@ -7,6 +7,13 @@ mongoose.connect("mongodb+srv://prasanth:123@cluster0.rhvlm1b.mongodb.net/recipe
     console.log("mongodb connection failed")
 })
 
+const Ingredientschema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+    }
+})
+
 const newSchema = new mongoose.Schema({
     username:{
         type:String,
@@ -53,5 +60,5 @@ const recipeSchema = new mongoose.Schema({
 
 const User = mongoose.model("user",newSchema)
 const Recipe = mongoose.model("recipe",recipeSchema)
-
-module.exports = { User, Recipe };
+const Ingredient = mongoose.model("ingredient",Ingredientschema)
+module.exports = { User, Recipe ,Ingredient};

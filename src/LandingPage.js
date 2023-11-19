@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import utensilsIcon from './images/Icon utensils.png';
 import cooking from './images/cooking.png'
 import { Navigate } from 'react-router-dom';
+
 import axios from 'axios' ;
 class LandingPage extends Component {
 
@@ -40,7 +41,7 @@ class LandingPage extends Component {
           alert('Password and Confirm Password do not match!');
           return;
         }
-    
+        
         console.log('Username:', this.state.signupUsername);
         console.log('Password:', this.state.signupPassword);
         try {
@@ -75,7 +76,16 @@ class LandingPage extends Component {
         // console.log('Login Username:', this.state.loginUsername);
         // console.log('Login Password:', this.state.loginPassword);
         console.log('eneterd handle login');
-        // Handle login logic here
+        // // Handle login logic here
+        // try {
+        //   axios.post("http://localhost:8000/ingredient",{
+        //     name:"Chicken",
+        //   })
+        // }
+        // catch(error)
+        // {
+        //   console.log(error)
+        // }
         try {
           axios.post("http://localhost:8000/",{
             username: this.state.loginUsername,password:this.state.loginPassword
@@ -85,7 +95,8 @@ class LandingPage extends Component {
             {
               console.log("success")
               this.setState({ isloggedin:true });
-
+              const { handleLogin } = this.props;
+              handleLogin(this.state.loginUsername);
             }
             else if(res.data === "notexist")
             {

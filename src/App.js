@@ -7,7 +7,13 @@ function App() {
 
     const [fileContent1, setFileContent1] = useState('');
     const [fileContent2, setFileContent2] = useState('');
-  
+    const [loginUsername, setLoginUsername] = useState('');
+
+    const handleLogin = (username) => {
+      // Your login logic
+      setLoginUsername(username);
+    };
+
     useEffect(() => {
       const loadFile = async () => {
         try {
@@ -55,16 +61,12 @@ function App() {
     });
   }
 
-
-
-
-
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path='/' element={<LandingPage theme={theme}/>} />
-          <Route path='/home' element={<HomePage theme={theme} recipes={recipes}/>} />
+          <Route path='/' element={<LandingPage theme={theme} handleLogin={handleLogin} />} />
+          <Route path='/home' element={<HomePage theme={theme} recipes={recipes} loginUsername={loginUsername}/>} />
           <Route path='/recipe/:id' element={<RecipeInfo recipes={recipes} />} />
         </Routes>
       </Router>

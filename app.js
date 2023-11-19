@@ -1,5 +1,5 @@
 const express = require("express")
-const { User, Recipe } = require("./mongo");
+const { User, Recipe ,Ingredient} = require("./mongo");
 const cors = require("cors")
 const app = express()
 app.use(express.json())
@@ -43,6 +43,27 @@ app.post("/",async(req,res)=>{
     }
 })
 
+app.post("/getingredients",async(req,res)=>{
+    const documents = await Ingredient.find({});
+    // console.log(documents);
+    try {
+        if(documents)
+        {
+            res.json(documents);
+            
+        }
+        else
+        {
+            res.json("data not exist")
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+        
+})
+
 app.post("/signup",async(req,res)=>{
     const{username,password} = req.body
     const data = {
@@ -56,16 +77,23 @@ app.post("/signup",async(req,res)=>{
             res.json("exist")
         }
         else{
+            await User.insertMany(data)
             res.json("notexist")
-            await collection.insertMany(data)
+            
         }
         
     } catch (error) {
         res.json("notexist")
-        console.log(error)
-
-        
+        console.log(error)  
     }
+})
+
+app.post("/ingredient",async(req,res)=>{
+    const {name}=req.body
+    const data = {
+        name:name
+    }
+    await Ingredient.insertMany(data)
 })
 
 app.listen(8000,()=>{

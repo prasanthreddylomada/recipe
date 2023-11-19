@@ -2,61 +2,69 @@ import React, { Component } from 'react';
 import profile from './images/Icon utensils.png';
 import RecipeCard from './RecipeCard';
 import { Link } from 'react-router-dom';
+import AddRecipePopup from './AddRecipePopup';
+import Select from 'react-select';
+import axios from 'axios' ;
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
+    const alldata = [] ;
+    try {
+        axios.post("http://localhost:8000/getingredients",{
+      
+        })
+        .then(res=>{
+          const ingredientsdata = res.data ;
+          
+          
+          for (let i = 0; i < ingredientsdata.length; i++) {
+            const id = ingredientsdata[i]._id;
+            const name= ingredientsdata[i].name;
+            const data2  = {
+              id:id,
+              label :name,
+              value: name
+
+            }
+            alldata.push(data2);
+            
+          }         
+
+        })
+        
+      } catch (error) {
+
+        console.log(error);
+        
+      }
+
 
     this.state = {
       selectedOptions: [],
       searchText: '',
       filteredOptions: [],
-      allOptions: [
-        { id: 1, value: 'Option 1' },
-        { id: 2, value: 'Option 2' },
-        { id: 3, value: 'Option 3' },
-        { id: 4, value: 'Option 4' },
-        { id: 5, value: 'Option 5' },
-        { id: 6, value: 'Option 6' },
-        { id: 7, value: 'Option 7' },
-        { id: 8, value: 'Option 8' },
-        { id: 9, value: 'Option 9' },
-      ],
+      isAddRecipePopupOpen: false,
+      allingredients: alldata,
     };
   }
 
-
-  handleSearchChange = (event) => {
-    const searchText = event.target.value;
-    const filteredOptions = this.state.allOptions.filter((option) =>
-      option.value.toLowerCase().includes(searchText.toLowerCase())
-    );
-    this.setState({ searchText, filteredOptions });
+  handleAddRecipeClick = () => {
+    this.setState({ isAddRecipePopupOpen: true });
   };
 
-  handleOptionSelect = (selectedOption) => {
-    const selectedOptions = [...this.state.selectedOptions];
-    
-    if (!selectedOptions.includes(selectedOption.value)) {
-      selectedOptions.push(selectedOption.value);
-      this.setState({
-        selectedOptions,
-        searchText: '',
-        filteredOptions: [],
-      });
-    }
-  };
-  
-
-  handleRemoveOption = (removedOption) => {
-    const selectedOptions = this.state.selectedOptions.filter((option) => option !== removedOption);
+  handleOptionSelect = (selectedOptions) => {
     this.setState({ selectedOptions });
   };
 
-  render() {
-    const { theme ,recipes} = this.props;
-    const { searchText, filteredOptions, selectedOptions } = this.state;
+  handleCloseAddRecipePopup = () => {
+    this.setState({ isAddRecipePopupOpen: false });
+  };
 
+
+  render() {
+    const { theme, recipes,loginUsername } = this.props;
+    const { searchText, selectedOptions, isAddRecipePopupOpen } = this.state;
 
     const styles = {
       topnavcontainer: {
@@ -72,22 +80,9 @@ class HomePage extends Component {
         position: 'relative',
       },
       searchBar: {
-        width: '50%',
         padding: '10px',
         fontSize: '16px',
         borderRadius: '5px',
-        border: '1px solid #ccc',
-      },
-      dropdown: {
-        position: 'absolute',
-        top: '100%',
-        left: 0,
-        width: '51%',
-        maxHeight: '300px',
-        overflowY: 'auto',
-        border: '1px solid #fff',
-        borderRadius: '0 0 5px 5px',
-        zIndex: 1,
       },
       selectedOptionsContainer: {
         display: 'flex',
@@ -105,51 +100,46 @@ class HomePage extends Component {
       removeOption: {
         marginLeft: '5px',
         cursor: 'pointer',
-      }
+      },
+      addrecipebutton: {
+        backgroundColor: theme.colors.button,
+        color: theme.colors.white,
+        width: '10%',
+        minHeight: '40px',  // Corrected property name
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        fontSize: '15px',
+      },
     };
 
     return (
       <div>
         <div style={styles.topnavcontainer}>
           <div style={styles.searchBarContainer}>
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchText}
-              onChange={this.handleSearchChange}
-              style={styles.searchBar}
-            />
-            {searchText && (
-              <div style={styles.dropdown}>
-                {filteredOptions.map((option) => (
-                  <div
-                    key={option.id}
-                    onClick={() => this.handleOptionSelect(option)}
-                    style={{ padding: '10px', cursor: 'pointer',background: '#EAE9E2'}}
-                  >
-                    {option.value}
-                  </div>
-                ))}
-              </div>
-            )}
-            <div style={styles.selectedOptionsContainer}>
-              {selectedOptions.map((option) => (
-                <div key={option} style={styles.selectedOption}>
-                  {option}
-                  <span
-                    onClick={() => this.handleRemoveOption(option)}
-                    style={styles.removeOption}
-                  >
-                    &#x2715;
-                  </span>
-                </div>
-              ))}
+            <div style={styles.searchBar}>
+              <Select
+                isMulti
+                options={this.state.allingredients}
+                value={selectedOptions}
+                onChange={this.handleOptionSelect}
+                placeholder="Select Ingredients"
+              />
             </div>
           </div>
-          <img src={profile} alt="profile image" />
+          <button style={{ ...styles.addrecipebutton, marginRight: '3%' }} onClick={this.handleAddRecipeClick}>
+            Add a Recipe
+          </button>
+          <img style={{ marginRight: '3%' }} src={profile} alt="profile image" />
         </div>
+        {isAddRecipePopupOpen && (
+          <AddRecipePopup
+            theme={theme} ingredientsdata ={this.state.allingredients}
+            onClosePopup={this.handleCloseAddRecipePopup}
+          />
+        )}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
-          {recipes.map((recipe,index) => (
+        {recipes.map((recipe,index) => (
             <div style={{ marginLeft: index === 0 && searchText ? '50%' : '0' }} key={recipe.id}>
               <Link to={`/recipe/${recipe.id}`} key={recipe.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <RecipeCard recipe={recipe} />
