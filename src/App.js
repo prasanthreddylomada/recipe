@@ -60,7 +60,8 @@ function App() {
       makingtime: '10 hours',
     });
   }
-
+  console.log("this is app.js")
+  console.log(loginUsername)
   return (
     <div className="App">
       <Router>

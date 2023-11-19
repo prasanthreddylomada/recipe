@@ -39,7 +39,7 @@ const recipeSchema = new mongoose.Schema({
         required:true,
     },
     ingredients:{
-        type:[Number],
+        type:[String],
         required:true,
     },
     process:{
@@ -53,6 +53,11 @@ const recipeSchema = new mongoose.Schema({
     author:{
         type:String,
         required:true,
+    },
+    timeneeded:{
+        type:String,
+        required : true,
+
     },
 })
 

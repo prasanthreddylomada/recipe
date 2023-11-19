@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
+import axios from 'axios' ;
 
 class AddRecipePopup extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class AddRecipePopup extends Component {
       precautions: '',
       allIngredients: [],
     };
+    console.log(this.props)
   }
   componentDidMount() {
     // Call handleIngredients to populate allIngredients
@@ -46,9 +48,32 @@ class AddRecipePopup extends Component {
   
 
   handleAddRecipe = () => {
-    // Implement logic to add the recipe (e.g., API call or state update)
+    
     const { recipeName, selectedIngredients, timeNeeded, process, precautions } = this.state;
-    console.log('Adding recipe:', { recipeName, selectedIngredients, timeNeeded, process, precautions });
+    const {loginUsername} = this.props
+    
+    console.log({ recipeName, selectedIngredients, timeNeeded, process, precautions,loginUsername })
+
+    try {
+            const onlyselingrenames = []
+            for (let i = 0; i < selectedIngredients.length; i++) {
+                const element = selectedIngredients[i].label;
+                onlyselingrenames.push(element);
+                
+            }
+            axios.post("http://localhost:8000/sendrecipe",{
+                recipename: recipeName,
+                selectedIngredients:onlyselingrenames,
+                timeneeded:timeNeeded,
+                process:process,
+                precautions:precautions,
+                author:loginUsername,
+            })
+        } catch (error) {
+            console.log(error)
+            
+        }
+    // console.log('Adding recipe:', { recipeName, selectedIngredients, timeNeeded, process, precautions });
 
     // Close the popup
     this.handleClosePopup();
@@ -66,7 +91,7 @@ class AddRecipePopup extends Component {
   };
 
   render() {
-    const { theme } = this.props;
+    const { theme,loginUsername } = this.props;
     const { recipeName, selectedIngredients, timeNeeded, process, precautions, allIngredients } = this.state;
 
     const styles = {

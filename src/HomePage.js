@@ -34,9 +34,7 @@ class HomePage extends Component {
         })
         
       } catch (error) {
-
         console.log(error);
-        
       }
 
 
@@ -46,6 +44,7 @@ class HomePage extends Component {
       filteredOptions: [],
       isAddRecipePopupOpen: false,
       allingredients: alldata,
+    
     };
   }
 
@@ -136,8 +135,10 @@ class HomePage extends Component {
           <AddRecipePopup
             theme={theme} ingredientsdata ={this.state.allingredients}
             onClosePopup={this.handleCloseAddRecipePopup}
+            loginUsername={loginUsername}
           />
         )}
+
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
         {recipes.map((recipe,index) => (
             <div style={{ marginLeft: index === 0 && searchText ? '50%' : '0' }} key={recipe.id}>
