@@ -16,23 +16,23 @@ function App() {
       setLoginUsername(username);
     };
 
-    useEffect(() => {
-      const loadFile = async () => {
-        try {
-          const response1 = await fetch('/processcb.txt'); // Update the path accordingly
-          const content1 = await response1.text();
-          setFileContent1(content1);
-          const response2 = await fetch('/inst.txt'); // Update the path accordingly
-          const content2 = await response2.text();
-          setFileContent2(content2);
-          // console.log(content);
-        } catch (error) {
-          console.error('Error loading file:', error);
-        }
-      };
+    // useEffect(() => {
+    //   const loadFile = async () => {
+    //     try {
+    //       const response1 = await fetch('/processcb.txt'); // Update the path accordingly
+    //       const content1 = await response1.text();
+    //       setFileContent1(content1);
+    //       const response2 = await fetch('/inst.txt'); // Update the path accordingly
+    //       const content2 = await response2.text();
+    //       setFileContent2(content2);
+    //       // console.log(content);
+    //     } catch (error) {
+    //       console.error('Error loading file:', error);
+    //     }
+    //   };
   
-      loadFile();
-    }, []); 
+    //   loadFile();
+    // }, []); 
   
   const theme = {
     colors: {
