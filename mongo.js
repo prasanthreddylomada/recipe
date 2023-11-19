@@ -51,7 +51,7 @@ const recipeSchema = new mongoose.Schema({
 
 
 
-const collection_0 = mongoose.model("user",newSchema)
-const collection_1 = mongoose.model("recipe",recipeSchema)
-module.exports=collection_0
-module.exports=collection_1
+const User = mongoose.model("user",newSchema)
+const Recipe = mongoose.model("recipe",recipeSchema)
+
+module.exports = { User, Recipe };

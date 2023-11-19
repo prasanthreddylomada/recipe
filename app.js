@@ -1,5 +1,5 @@
 const express = require("express")
-const collection = require("./mongo")
+const { User, Recipe } = require("./mongo");
 const cors = require("cors")
 const app = express()
 app.use(express.json())
@@ -13,7 +13,7 @@ app.get("/",cors(),(req,res)=>{
 app.post("/",async(req,res)=>{
     const{username,password} = req.body
     try {
-        const check = await collection.findOne({username:username})
+        const check = await User.findOne({username:username})
         console.log("listen succesfull")
         console.log(username)
         console.log(password)
@@ -50,7 +50,7 @@ app.post("/signup",async(req,res)=>{
         password:password
     }
     try {
-        const check = await collection.findOne({username:username})
+        const check = await User.findOne({username:username})
         if(check)
         {
             res.json("exist")
