@@ -35,6 +35,7 @@ class HomePage extends Component {
         
       } catch (error) {
         console.log(error);
+        // console.log("bye")
       }
 
 
