@@ -63,6 +63,26 @@ app.post("/getingredients",async(req,res)=>{
     }
         
 })
+app.post("/getrecipe",async(req,res)=>{
+    const documents = await Recipe.find({});
+    // console.log(documents);
+    try {
+        if(documents)
+        {
+            res.json(documents);
+            
+        }
+        else
+        {
+            res.json("data not exist")
+        }
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+        
+})
 
 app.post("/sendrecipe",async(req,res)=>{
     const{recipename,selectedIngredients,timeneeded,process,precautions,author} = req.body

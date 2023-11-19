@@ -13,11 +13,18 @@ class AddRecipePopup extends Component {
       process: '',
       precautions: '',
       allIngredients: [],
+      author : localStorage.getItem('author'),
     };
-    console.log(this.props)
+    console.log(this.state)
+
+
   }
+
+
+    
   componentDidMount() {
     // Call handleIngredients to populate allIngredients
+    this.handleauthor();
     this.handleIngredients();
   }
   handleIngredients = ()=> {
@@ -45,14 +52,29 @@ class AddRecipePopup extends Component {
     this.setState({ precautions: event.target.value });
   };
 
+  handleauthor = () => {
+    const { loginUsername } = this.props;
+  
+    if (loginUsername) {
+      // Store author name in localStorage
+      localStorage.setItem('author', loginUsername);
+  
+      this.setState({ author: loginUsername }, () => {
+        console.log(this.state.author);
+      });
+    } else {
+      console.log(false);
+    }
+  };
+  
+  
   
 
   handleAddRecipe = () => {
+
+    const { recipeName, selectedIngredients, timeNeeded, process, precautions,author } = this.state;
     
-    const { recipeName, selectedIngredients, timeNeeded, process, precautions } = this.state;
-    const {loginUsername} = this.props
-    
-    console.log({ recipeName, selectedIngredients, timeNeeded, process, precautions,loginUsername })
+    console.log({ recipeName, selectedIngredients, timeNeeded, process, precautions,author })
 
     try {
             const onlyselingrenames = []
@@ -67,7 +89,7 @@ class AddRecipePopup extends Component {
                 timeneeded:timeNeeded,
                 process:process,
                 precautions:precautions,
-                author:loginUsername,
+                author:author,
             })
         } catch (error) {
             console.log(error)
@@ -92,8 +114,8 @@ class AddRecipePopup extends Component {
 
   render() {
     const { theme,loginUsername } = this.props;
-    const { recipeName, selectedIngredients, timeNeeded, process, precautions, allIngredients } = this.state;
-
+    const { recipeName, selectedIngredients, timeNeeded, process, precautions, allIngredients ,author} = this.state;
+    
     const styles = {
     popupContainer: {
     position: 'fixed',
@@ -156,6 +178,7 @@ class AddRecipePopup extends Component {
     };
 
     return (
+      
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)' }}>
         <div style={styles.popupContainer}>
           <div style={styles.title}>Create Recipe</div>
